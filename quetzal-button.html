@@ -4,7 +4,7 @@ A button with a simple generic style.
 
 <link rel="import" href="../quetzal-element/quetzal-element.html">
 
-<polymer-element name="quetzal-button" extends="quetzal-element" attributes="quiet tabindex">
+<polymer-element name="quetzal-button" extends="quetzal-element" attributes="disabled quiet tabindex">
 
 <template>
 
@@ -36,13 +36,10 @@ button[disabled] {
   cursor: default; /* Re-set default cursor for disabled buttons */
 }
 
-/* Generic styling */
 /*
-TODO: Rewrite this as :host([generic]) once that works and we can cross the
-light/shadow boundary.
-*/
-
-button.generic {
+ * Generic styling
+ */
+:host([generic]:host) ^ button {
   background: whitesmoke;
   background-image: -webkit-linear-gradient(top, white, #e6e6e6);
   background-image: linear-gradient(top, white, #e6e6e6);
@@ -58,7 +55,15 @@ button.generic {
   vertical-align: middle;
 }
 
-button.generic:hover {
+:host([generic][quiet]:host) ^ button {
+  /* Opt-out of border, etc., in normal state. */
+  background: none;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+:host([generic]:host) ^ button:hover {
   background-color: #e6e6e6;
   background-image: -webkit-linear-gradient(top, white, #eee);
   background-image: linear-gradient(top, white, #eee);
@@ -70,37 +75,28 @@ button.generic:hover {
   text-shadow: 0 1px 3px white;
 }
 
-button.generic:active {
+:host([generic]:host) ^ button:active {
   background-color: #d9d9d9;
   background-image: none;
   box-shadow: inset 0 1px 4px 2gba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   color: #111;
 }
 
-button.generic:active,
-button.generic:focus {
+:host([generic]:host) ^ button:active,
+:host([generic]:host) ^ button:focus {
   border-color: #4d90fe;
 }
 
-button.generic[disabled] {
+:host([generic][disabled]:host) ^ button {
   background: whitesmoke;
   border: 1px solid #ccc;
   box-shadow: none;
   color: #999;
   text-shadow: none;
 }
-
-/* HACK: Use :host syntax once the styling-the-host-with-a-class bug is fixed. */
-button.quiet {
-  /* Opt-out of border, etc., in normal state. */
-  background: none;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: none;
-}
 </style>
 
-<button id="button" pseudo="x-button" tabindex="{{tabindex}}">
+<button id="button" disabled="{{disabled}}" tabindex="{{tabindex}}">
   <content></content>
 </button>
 
@@ -111,9 +107,7 @@ Polymer( "quetzal-button", {
 
   applyAuthorStyles: true,
 
-  genericChanged: function() {
-    this.$.button.classList.toggle( "generic", this.generic );
-  },
+  disabled: false,
 
   quiet: false,
 

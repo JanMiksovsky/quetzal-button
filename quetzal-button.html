@@ -4,7 +4,7 @@ A button with a simple generic style.
 
 <link rel="import" href="../quetzal-element/quetzal-element.html">
 
-<polymer-element name="quetzal-button" extends="quetzal-element" attributes="disabled quiet tabindex">
+<polymer-element name="quetzal-button" extends="quetzal-element" attributes="isDisabled quiet tabindex">
 
 <template>
 
@@ -36,7 +36,7 @@ button {
   width: 100%;
 }
 
-button[disabled] {
+button[isDisabled] {
   cursor: default; /* Re-set default cursor for disabled buttons */
 }
 
@@ -91,7 +91,7 @@ button[disabled] {
   border-color: #4d90fe;
 }
 
-:host([generic][disabled]:host) ^ button {
+:host([generic][isDisabled]:host) ^ button {
   background: whitesmoke;
   border: 1px solid #ccc;
   box-shadow: none;
@@ -100,7 +100,7 @@ button[disabled] {
 }
 </style>
 
-<button id="button" disabled="{{disabled}}" tabindex="{{tabindex}}">
+<button id="button" disabled="{{isDisabled}}" tabindex="{{tabindex}}">
   <content></content>
 </button>
 
@@ -111,7 +111,9 @@ Polymer( "quetzal-button", {
 
   applyAuthorStyles: true,
 
-  disabled: false,
+  // We would *really* like to call this attribute "disabled", but that causes
+  // problems in IE. See https://github.com/Polymer/polymer/issues/372.
+  isDisabled: false,
 
   quiet: false,
 
